@@ -25,12 +25,23 @@ public class Projecte {
     public static void main(String[] args) {
         Scanner entry = new Scanner(System.in);
         Scanner text = new Scanner(System.in);
-        int init, aparicio=0, animes=0, opcioInt=0, auxInt=0;
-        String nom = null, zona=null, descripcio=null, auxStr=null;
-        char atac=' ', opcioYN=' ', auxChr=' ';
+        int i, init, opcioInt=0, auxInt=0;
+        String auxStr=null;
+        char opcioYN=' ', auxChr=' ';
         char[] atacs = {'m', 'a', 'c'};
-        boolean valid = false;
-        double tamany=0, auxDbl=0;
+        double auxDbl=0;
+
+        // Declarem totes les caselles del array a false (canviarem a true quan estigue plena)
+        for (int i = 0; i < array.length(); i++ ) {
+          array[i] = new Boss();
+          array[i].setOmplit(false);
+        }
+
+        // // Búsqueda de caselles buides
+        // int i;
+        // for ( i = 0; i < array.length() && array[i].isOmplit(); i++);
+        //   if (i != array.length()); // casella buida
+        //   else System.out.println("No caben més pilots"); //totes les caselles estan plenes
 
 
         do {
@@ -49,21 +60,26 @@ public class Projecte {
             switch(init) {
                 case 0: System.exit(0);
                 case 1: // Línies que ens permetran introduïr les dades d'un nou Boss
-                    if(!valid) {
+
+                    // Búsqueda de caselles buides
+                    // int i;
+                    for ( i = 0; i < array.length() && array[i].isOmplit(); i++);
+
+                    if (i < array.length()) {
                         System.out.println("###Afegir un Boss###");
                         System.out.println("Introdueix el nom complet: ");
-                        nom = text.nextLine();
+                        array[i].setNom(text.skip("[\r\n]*").nextLine());
                         do {
                             System.out.println("Joc de la primera aparició (valor numèric): ");
-                            aparicio = entry.nextInt();
+                            array[i].setAparicio(entry.skip("[\r\n]*").nextInt());
                         } while (aparicio < 1 || aparicio > 3);
                         System.out.println("Zona on es troba: ");
-                        zona = text.nextLine();
+                        array[i].setZona(text.skip("[\r\n]*").nextLine());
                         do { // Demana les dades
                             System.out.println("Tipus d'atacs (\"m\", \"a\" o \"c\"): ");
                             System.out.println("Prem h per a mes ajuda");
-                            atac = text.next().charAt(0); // si les dades no són vàlides es repetirà el bucle fins que siguin correctes
-                            if (atacs[0] == atac || atacs[1] == atac || atacs[2] == atac) { // si les dades són valides valid = true i es surt del bucle
+                            array[i].setAtac(text.skip("[\r\n]*").next().charAt(0)); // si les dades no són vàlides es repetirà el bucle fins que siguin correctes
+                            if (atacs[0] == getAtac() || atacs[1] == getAtac() || atacs[2] == getAtac()) { // si les dades són valides valid = true i es surt del bucle
                                 break;
                             } else if (atac == 'h') { // si premem 'h' es mostrarà l'ajuda
                                 System.out.println("#AJUDA#");
@@ -74,63 +90,69 @@ public class Projecte {
                             }
                         } while(true);
                         System.out.println("Tamany (en metres): ");
-                        tamany = entry.nextDouble();
+                        array[i].setTamany(entry.skip("[\r\n]*").nextDouble());
                         System.out.println("Animes: ");
-                        animes = entry.nextInt();
+                        array[i].setAnimes(entry.skip("[\r\n]*").nextInt());
                         System.out.println("Descripció: ");
-                        descripcio = text.nextLine();
-                        valid = true;
+                        array[i].setDesc(text.skip("[\r\n]*").nextLine());
+                        array[i].setOmplit(true);
                         break;
                     } else {
                         //En cas d'haver dades introduïdes anteriorment s'executaran les següents línies
                         System.out.println("Les dades ja han estat introduïdes, si en vols posar més l'hauràs d'esborrar primer.");
                         System.out.println("Vols esborrar les dades per introduïr de noves? (s/n)");
                         opcioYN = entry.next().charAt(0);
-                        if (opcioYN == 's') valid = false; // else { valid = true; }
+                        if (opcioYN == 's') array[i].setOmplit(false);
                     }
                 case 2:
+
+                    for ( i = 0; i < array.length() && array[i].isOmplit(); i++);
+
                     System.out.println("###Esborrar Boss###");
-                    if (!valid) {
+                    if (i < array.length()) {
                         System.out.println("No existeixen dades per a esborrar");
                         System.out.println("###################\n");
                     } else {
                         System.out.println("S'esborraran les següents dades: \n");
-                        System.out.println("Nom complet: " + nom);
-                        System.out.println("Entrega de la primera aparició: " + aparicio);
-                        System.out.println("Zona on es troba: " + zona);
-                        System.out.println("Tipus d'atacs: " + atac);
-                        System.out.println("Tamany: " + tamany);
-                        System.out.println("Animes: " + animes);
-                        System.out.println("Descripció: " + descripcio + "\n");
+                        System.out.println("Nom complet: " + getNom());
+                        System.out.println("Entrega de la primera aparició: " + getAparicio());
+                        System.out.println("Zona on es troba: " + getZona());
+                        System.out.println("Tipus d'atacs: " + getAtac());
+                        System.out.println("Tamany: " + getTamany());
+                        System.out.println("Animes: " + getAnimes());
+                        System.out.println("Descripció: " + getDesc() + "\n");
                         System.out.println("Estas segur d'esborrar les dades? (s/n)");
                         opcioYN = entry.next().charAt(0);
                         if (opcioYN == 's') {
-                            valid = false;
+                            array[i].isOmplit(false);
                             System.out.println("Dades esborrades correctament");
                             System.out.println("###################\n");
                         } else {
-                            //valid = true;
+                            // array[i].isOmplit(true);
                             System.out.println("No s'han esborrat les dades");
                             System.out.println("###################\n");
                         }
                     }
                     break;
                 case 3:
+
+                    for ( i = 0; i < array.length() && array[i].isOmplit(); i++);
+
                     System.out.println("###Modificar Boss###");
-                    if(!valid) {
+                    if(i < array.length()) {
                         System.out.println("No hi ha cap boss introduït");
                         System.out.println("####################\n");
                     } else {
                         do {
                             System.out.println("Tria el camp que vols modificar: \n");
                             System.out.println("0. Tornar al menú");
-                            System.out.println("1. Nom complet: " + nom);
-                            System.out.println("2. Entrega de la primera aparició: " + aparicio);
-                            System.out.println("3. Zona on es troba: " + zona);
-                            System.out.println("4. Tipus d'atacs: " + atac);
-                            System.out.println("5. Tamany: " + tamany);
-                            System.out.println("6. Animes: " + animes);
-                            System.out.println("7. Descripció: " + descripcio + "\n");
+                            System.out.println("1. Nom complet: " + getNom());
+                            System.out.println("2. Entrega de la primera aparició: " + getAparicio());
+                            System.out.println("3. Zona on es troba: " + getZona());
+                            System.out.println("4. Tipus d'atacs: " + getAtac());
+                            System.out.println("5. Tamany: " + getTamany());
+                            System.out.println("6. Animes: " + getAnimes());
+                            System.out.println("7. Descripció: " + getDesc() + "\n");
                             System.out.println("Camp a modificar [0-7]: ");
                             opcioInt = entry.nextInt();
                             if (opcioInt == 0) {
@@ -142,25 +164,25 @@ public class Projecte {
                                 System.out.println("Introdueix el nou valor: ");
                                 switch(opcioInt){
                                     case 1:
-                                        nom = entry.skip("[\r\n]*").nextLine();
+                                        array[i].setNom(entry.skip("[\r\n]*").nextLine());
                                         break;
                                     case 2:
                                         do {
                                             System.out.println("Joc de la primera aparició (valor numèric): ");
-                                            aparicio = entry.nextInt();
-                                        } while (aparicio < 1 || aparicio > 3);
+                                            array[i].setAparicio(entry.skip("[\r\n]*").nextInt());
+                                        } while (getAparicio() < 1 || getAparicio() > 3);
                                         break;
                                     case 3:
-                                        zona = entry.skip("[\r\n]*").nextLine();
+                                        array[i].setZona(entry.skip("[\r\n]*").nextLine());
                                         break;
                                     case 4:
                                         do { // Demana les dades
                                             System.out.println("Tipus d'atacs (\"m\", \"a\" o \"c\"): ");
                                             System.out.println("Prem h per a mes ajuda");
-                                            atac = text.next().charAt(0); // si les dades no són vàlides es repetirà el bucle fins que siguin correctes
-                                            if (atacs[0] == atac || atacs[1] == atac || atacs[2] == atac) { // si les dades són valides valid = true i es surt del bucle
+                                            array[i].setAtac(text.skip("[\r\n]*").next().charAt(0)); // si les dades no són vàlides es repetirà el bucle fins que siguin correctes
+                                            if (atacs[0] == getAtac() || atacs[1] == getAtac() || atacs[2] == getAtac()) { // si les dades són valides valid = true i es surt del bucle
                                                 break;
-                                            } else if (atac == 'h') { // si premem 'h' es mostrarà l'ajuda
+                                            } else if (getAtac() == 'h') { // si premem 'h' es mostrarà l'ajuda
                                                 System.out.println("#AJUDA#");
                                                 System.out.println("m = magia \na = armes a distància \nc = cos a cos");
                                                 System.out.println("#######");
@@ -170,7 +192,7 @@ public class Projecte {
                                         } while(true);
                                         break;
                                     case 5:
-                                        tamany = entry.nextDouble();
+                                        array[i].setTamany(entry.skip("[\r\n]*").nextDouble());
                                         break;
                                     case 6:
                                         animes = entry.nextInt();
@@ -188,8 +210,11 @@ public class Projecte {
                     }
                     break;
                 case 4:
+
+                    // for ( i = 0; i < array.length() && array[i].isOmplit(); i++);
+
                     System.out.println("###Llistat de Bosses###");
-                    if(!valid){
+                    if(!valid){ // --> if (array[i].isOmplit(false)) {}
                         System.out.println("No hi ha dades introduïdes");
                         System.out.println("#######################\n");
                     } else {
