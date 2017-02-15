@@ -1,21 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package projecte;
+MP03 Projecte
+Gerard Rey González 1r ASIX
+*/
 
 import java.util.Scanner;
 
-/**
- *
- * @author gerard
- */
-public class Projecte {
-
-    /**
-     * @param args the command line arguments
-     */
+public class projecte {
 
     //Nombre màxim de casselles per a l'array
     private static final int MAX_BOSSES=2;
@@ -32,9 +22,9 @@ public class Projecte {
         double auxDbl=0;
 
         // Declarem totes les caselles del array a false (canviarem a true quan estigue plena)
-        for (int i = 0; i < array.length(); i++ ) {
-          array[i] = new Boss();
-          array[i].setOmplit(false);
+        for (int q = 0; q < array.length(); q++ ) {
+          array[q] = new Boss();
+          array[q].setOmplit(false);
         }
 
         // // Búsqueda de caselles buides
@@ -195,10 +185,10 @@ public class Projecte {
                                         array[i].setTamany(entry.skip("[\r\n]*").nextDouble());
                                         break;
                                     case 6:
-                                        animes = entry.nextInt();
+                                        getAnimes() = entry.nextInt();
                                         break;
                                     case 7:
-                                        descripcio = entry.skip("[\r\n]*").nextLine();
+                                        getDesc() = entry.skip("[\r\n]*").nextLine();
                                         break;
                                 }
                                 System.out.println("Vols modificar un altre valor? (s/n)");
@@ -218,13 +208,13 @@ public class Projecte {
                         System.out.println("No hi ha dades introduïdes");
                         System.out.println("#######################\n");
                     } else {
-                        System.out.println("\nNom complet: " + nom);
-                        System.out.println("Entrega de la primera aparició: " + aparicio);
-                        System.out.println("Zona on es troba: " + zona);
-                        System.out.println("Tipus d'atacs: " + atac);
-                        System.out.println("Tamany: " + tamany);
-                        System.out.println("Animes: " + animes);
-                        System.out.println("Descripció: " + descripcio);
+                        System.out.println("\nNom complet: " + getNom());
+                        System.out.println("Entrega de la primera aparició: " + getAparicio());
+                        System.out.println("Zona on es troba: " + getZona());
+                        System.out.println("Tipus d'atacs: " + getAtac());
+                        System.out.println("Tamany: " + getTamany());
+                        System.out.println("Animes: " + getAnimes());
+                        System.out.println("Descripció: " + getDesc());
                         System.out.println("#######################\n");
                     }
                     break;

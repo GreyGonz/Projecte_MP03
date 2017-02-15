@@ -6,11 +6,15 @@ public class boss {
   private String nom=null;
   private String zona=null;
   private String desc=null;
-  private Int aparicio=0;
-  private Int animes=0;
+  private int aparicio=0;
+  private int animes=0;
   private double tamany=0;
   private char atac=' ';
   private boolean omplit=false;
+
+  public void Boss() {
+
+  }
 
   public boolean isOmplit() {
     return omplit;
@@ -44,19 +48,19 @@ public class boss {
     this.desc = desc;
   }
 
-  public Int getAparicio() {
+  public int getAparicio() {
     return aparicio;
   }
 
-  public void setAparicio(String aparicio) {
+  public void setAparicio(int aparicio) {
     this.aparicio = aparicio;
   }
 
-  public Int getAnimes() {
+  public int getAnimes() {
     return animes;
   }
 
-  public void setAanimes(String animes) {
+  public void setAanimes(int animes) {
     this.animes = animes;
   }
 
@@ -64,15 +68,15 @@ public class boss {
     return tamany;
   }
 
-  public void setTamany(String tamany) {
+  public void setTamany(int tamany) {
     this.tamany = tamany;
   }
 
-  public Char getAtac() {
+  public char getAtac() {
     return atac;
   }
 
-  public void setAtac(String atac) {
+  public void setAtac(char atac) {
     this.atac = atac;
   }
 
