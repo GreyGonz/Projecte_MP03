@@ -2,7 +2,7 @@
 
 package projecte;
 
-public class boss {
+public class Boss {
   private String nom=null;
   private String zona=null;
   private String desc=null;
@@ -12,7 +12,7 @@ public class boss {
   private char atac=' ';
   private boolean omplit=false;
 
-  public void Boss() {
+  public Boss() {
 
   }
 
@@ -60,7 +60,7 @@ public class boss {
     return animes;
   }
 
-  public void setAanimes(int animes) {
+  public void setAnimes(int animes) {
     this.animes = animes;
   }
 

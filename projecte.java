@@ -96,7 +96,7 @@ public class projecte {
                     }
                 case 2:
 
-                    for ( i = 0; i < array.length() && array[i].isOmplit(); i++);
+                    for ( i = 0; i < array.length && array[i].isOmplit(); i++);
 
                     System.out.println("###Esborrar Boss###");
                     if (i < array.length()) {
