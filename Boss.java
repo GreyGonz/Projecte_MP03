@@ -68,7 +68,7 @@ public class Boss {
     return tamany;
   }
 
-  public void setTamany(int tamany) {
+  public void setTamany(double tamany) {
     this.tamany = tamany;
   }
 
