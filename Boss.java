@@ -2,6 +2,8 @@
 
 package projecte;
 
+import java.util.Scanner;
+
 public class Boss {
   private String nom=null;
   private String zona=null;
@@ -11,9 +13,22 @@ public class Boss {
   private double tamany=0;
   private char atac=' ';
   private boolean omplit=false;
+  private Scanner e = new Scanner(System.in);
 
   public Boss() {
 
+  }
+
+  // Retorna el metode cada vegada que es crida l'objecte
+  @Override // necessari per a sobreescriure el metode toString()
+  public String toString() {
+     return "Nom complet: " + nom +
+              "\nEntrega de la primera aparició: " + aparicio +
+              "\nZona on es troba: " + zona +
+              "\nTipus d'atacs: " + atac +
+              "\nTamany: " + tamany +
+              "\nAnimes: " + animes +
+              "\nDescripció: " + desc + "\n";
   }
 
   public boolean isOmplit() {
@@ -52,8 +67,22 @@ public class Boss {
     return aparicio;
   }
 
-  public void setAparicio(int aparicio) {
-    this.aparicio = aparicio;
+  // public void setAparicio(int aparicio) {
+  //   this.aparicio = aparicio;
+  // }
+
+  public void setAparicio() {
+    do {
+
+      try {
+        this.aparicio = e.skip("[\r\n]*").nextInt();
+        break;
+      } catch (java.util.InputMismatchException x) {
+        System.err.println("VALOR INVÀLID");
+        e.next();
+      }
+    } while(true && (aparicio < 1 || aparicio > 3));
+
   }
 
   public int getAnimes() {
@@ -68,7 +97,7 @@ public class Boss {
     return tamany;
   }
 
-  public void setTamany(int tamany) {
+  public void setTamany(double tamany) {
     this.tamany = tamany;
   }
 
@@ -79,6 +108,18 @@ public class Boss {
   public void setAtac(char atac) {
     this.atac = atac;
   }
+
+  // public void setAtac() {
+  //   do {
+  //     try {
+  //       this.atac = e.skip("[\r\n]*").next().charAt(0);
+  //       break;
+  //     } catch (java.util.InputMismatchException x) {
+  //       System.err.println("VALOR NO VÀLID");
+  //       e.next();
+  //     }
+  //   } while(true);
+  // }
 
 
 }

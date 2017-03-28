@@ -40,26 +40,36 @@ public class projecte1 {
   public static void printMenu() {
     Scanner e = new Scanner(System.in);
 
-    //Dibuixa el menú per pantalla
-    System.out.println("####Dark Souls Bosses####");
-    System.out.println("0. Sortir ");
-    System.out.println("1. Afegir Boss");
-    System.out.println("2. Esborrar Boss");
-    System.out.println("3. Modificar Boss");
-    System.out.println("4. Llistar Boss");
-    System.out.println("5. Ajuda");
-    System.out.println("#########################");
-    System.out.println("Elegeix una opció [0-4]: ");
-    opcio = e.nextInt();
+    do {
 
+      System.out.println("####Dark Souls Bosses####");
+      System.out.println("0. Sortir ");
+      System.out.println("1. Afegir Boss");
+      System.out.println("2. Esborrar Boss");
+      System.out.println("3. Modificar Boss");
+      System.out.println("4. Llistar Boss");
+      System.out.println("5. Ajuda");
+      System.out.println("#########################");
+      System.out.println("Elegeix una opció [0-4]: ");
+
+      try {
+        opcio = e.nextInt();
+        break;
+      } catch (java.util.InputMismatchException x) {
+        System.err.println("\nEL VALOR INTRODUÏT NO ÉS VÀLID!\n");
+        e.next();
+      }
+    } while(true);
   }
 
   public static void triaOpcio() {
 
     switch (opcio) {
-      case 0: System.exit(0);
-      case 1: newBoss();
-      case 4: llistarBoss();
+      case 0: System.exit(0); break;
+      case 1: newBoss(); break;
+      case 2: esborrarBoss(); break;
+      case 3: modificarBoss(); break;
+      case 4: llistarBoss(); break;
     }
 
   }
@@ -71,42 +81,81 @@ public class projecte1 {
     return (i<array.length?true:false);
   }
 
+  private static boolean bossExist() {
+    int i;
+    for (i = 0; i < array.length && !array[i].isOmplit(); i++);
+    casella = i;
+    return (i<array.length?true:false);
+  }
+
+  private static void noValue() {
+    System.out.println("\nNo es troba cap boss introduït");
+    System.out.println("###################\n");
+  }
+
+  private static void triaBoss() {
+    Scanner entry = new Scanner(System.in);
+
+    llistarBoss();
+
+    do {
+      System.out.println("Quin boss desitges esborrar?[1-" + MAX_BOSSES + "]");
+      casella = entry.nextInt();
+    } while (casella < 0 && casella > MAX_BOSSES);
+
+    casella--;
+  }
+
+  private static void mostrarBoss() {
+    System.out.println(array[casella]);
+  }
+
+  private static void tipusAtacs() {
+    Scanner entry = new Scanner(System.in);
+
+    do { // Demana les dades
+        System.out.println("Tipus d'atacs (\"m\", \"a\" o \"c\"): ");
+        System.out.println("Prem h per a mes ajuda");
+        array[casella].setAtac(entry.skip("[\r\n]*").next().charAt(0)); // si les dades no són vàlides es repetirà el bucle fins que siguin correctes
+        if (atacs[0] == array[casella].getAtac() || atacs[1] == array[casella].getAtac() || atacs[2] == array[casella].getAtac()) {
+            break;
+        } else if (atacs[3] == 'h') { // si premem 'h' es mostrarà l'ajuda
+            System.out.println("#AJUDA#");
+            System.out.println("m = magia \na = armes a distància \nc = cos a cos");
+            System.out.println("#######");
+        } else {
+            System.out.println("El valor introduït no és vàlid. \n");
+        }
+    } while(true);
+  }
+
   private static void newBoss() {
     Scanner entry = new Scanner(System.in);
-    Scanner text = new Scanner(System.in);
 
     if (casellaDisponible()) {
-        System.out.println("###Afegir un Boss###");
+        System.out.println("\n###Afegir un Boss###");
+
         System.out.println("Introdueix el nom complet: ");
-        array[casella].setNom(text.skip("[\r\n]*").nextLine());
-        do {
-            System.out.println("Joc de la primera aparició (valor numèric): ");
-            array[casella].setAparicio(entry.skip("[\r\n]*").nextInt());
-        } while ( array[casella].getAparicio() < 1 || array[casella].getAparicio() > 3);
+        array[casella].setNom(entry.skip("[\r\n]*").nextLine());
+
+        System.out.println("Joc de la primera aparició (valor numèric): ");
+        array[casella].setAparicio();
+
         System.out.println("Zona on es troba: ");
-        array[casella].setZona(text.skip("[\r\n]*").nextLine());
-        do { // Demana les dades
-            System.out.println("Tipus d'atacs (\"m\", \"a\" o \"c\"): ");
-            System.out.println("Prem h per a mes ajuda");
-            array[casella].setAtac(text.skip("[\r\n]*").next().charAt(0)); // si les dades no són vàlides es repetirà el bucle fins que siguin correctes
-            if (atacs[0] == array[casella].getAtac() || atacs[1] == array[casella].getAtac() || atacs[2] == array[casella].getAtac()) {
-                break;
-            } else if (atacs[3] == 'h') { // si premem 'h' es mostrarà l'ajuda
-                System.out.println("#AJUDA#");
-                System.out.println("m = magia \na = armes a distància \nc = cos a cos");
-                System.out.println("#######");
-            } else {
-                System.out.println("El valor introduït no és vàlid. \n");
-            }
-        } while(true);
+        array[casella].setZona(entry.skip("[\r\n]*").nextLine());
+
+        tipusAtacs();
+
         System.out.println("Tamany (en metres): ");
         array[casella].setTamany(entry.skip("[\r\n]*").nextInt());
+
         System.out.println("Animes: ");
         array[casella].setAnimes(entry.skip("[\r\n]*").nextInt());
+
         System.out.println("Descripció: ");
-        array[casella].setDesc(text.skip("[\r\n]*").nextLine());
+        array[casella].setDesc(entry.skip("[\r\n]*").nextLine());
+
         array[casella].setOmplit(true);
-        System.out.println(array[casella].isOmplit());
     } else {
         //En cas d'haver dades introduïdes anteriorment s'executaran les següents línies
         System.out.println("Les dades ja han estat introduïdes, si en vols posar més l'hauràs d'esborrar primer.");
@@ -123,21 +172,114 @@ public class projecte1 {
     }
   }
 
-  private static void llistarBoss() {
+  private static void esborrarBoss() {
+    Scanner entry = new Scanner(System.in);
 
-    for (int i = 0; i < array.length; i++) {
-      System.out.println("Boss num " + (i+1));
-      System.out.println("#########################");
-      System.out.println("Nom complet: " + array[i].getNom());
-      System.out.println("Entrega de la primera aparició: " + array[i].getAparicio());
-      System.out.println("Zona on es troba: " + array[i].getZona());
-      System.out.println("Tipus d'atacs: " + array[i].getAtac());
-      System.out.println("Tamany: " + array[i].getTamany());
-      System.out.println("Animes: " + array[i].getAnimes());
-      System.out.println("Descripció: " + array[i].getDesc() + "\n");
-    }
+    System.out.println("\n###Esborrar Boss###");
 
+    if (bossExist()) {
+
+      triaBoss();
+
+      if (!array[casella].isOmplit()) {
+        System.out.println("\nEl boss elegit no existeix o ja es troba esborrat. Perfavor elegeix un boss diferent: ");
+        entry.next();
+        esborrarBoss();
+      }
+
+      System.out.println("S'esborraran les següents dades: \n");
+
+      mostrarBoss();
+
+      System.out.println("Estas segur d'esborrar les dades? (s/n)");
+      yn = entry.next().charAt(0);
+      if (yn == 's') {
+          array[casella].setOmplit(false);
+          System.out.println("Dades esborrades correctament");
+          System.out.println("###################\n");
+      } else {
+          System.out.println("No s'han esborrat les dades");
+          System.out.println("###################\n");
+      }
+    } else noValue();
 
   }
+
+  private static void modificarBoss() {
+    Scanner entry = new Scanner(System.in);
+    int opcioInt,bosSelec;
+
+    System.out.println("###Modificar Boss###");
+
+    if(!bossExist()) noValue();
+    else {
+        triaBoss();
+
+        do {
+            System.out.println("Tria el camp que vols modificar: \n");
+            System.out.println("0. Tornar al menú");
+            System.out.println("1. Nom complet: " + array[casella].getNom());
+            System.out.println("2. Entrega de la primera aparició: " + array[casella].getAparicio());
+            System.out.println("3. Zona on es troba: " + array[casella].getZona());
+            System.out.println("4. Tipus d'atacs: " + array[casella].getAtac());
+            System.out.println("5. Tamany: " + array[casella].getTamany());
+            System.out.println("6. Animes: " + array[casella].getAnimes());
+            System.out.println("7. Descripció: " + array[casella].getDesc() + "\n");
+            System.out.println("Camp a modificar [0-7]: ");
+            opcioInt = entry.nextInt();
+            if (opcioInt == 0) {
+                System.out.println("####################\n");
+                break;
+            } else if (opcioInt < 0 || opcioInt > 7){
+                System.out.println("Valor invàlid");
+            } else {
+                System.out.println("Introdueix el nou valor: ");
+                switch(opcioInt){
+                    case 1:
+                        array[casella].setNom(entry.skip("[\r\n]*").nextLine());
+                        break;
+                    case 2:
+                        comprovaAparicio();
+                        break;
+                    case 3:
+                        array[casella].setZona(entry.skip("[\r\n]*").nextLine());
+                        break;
+                    case 4:
+                        tipusAtacs();
+                        break;
+                    case 5:
+                        array[casella].setTamany(entry.skip("[\r\n]*").nextDouble());
+                        break;
+                    case 6:
+                        array[casella].setAnimes(entry.nextInt());
+                        break;
+                    case 7:
+                        array[casella].setDesc(entry.skip("[\r\n]*").nextLine());
+                        break;
+                }
+                System.out.println("Vols modificar un altre valor? (s/n)");
+                yn = entry.next().charAt(0);
+                if (yn == 'n') break;
+                System.out.println("####################\n");
+            }
+        } while(true);
+    }
+  }
+
+  private static void llistarBoss() {
+
+    if(bossExist()) {
+      for (casella = 0; casella < array.length; casella++) {
+        if (array[casella].isOmplit()) {
+          System.out.println("\nBoss num " + (casella+1));
+          System.out.println("#########################");
+          mostrarBoss();
+        }
+      }
+    } else noValue();
+
+  }
+
+
 
 }
