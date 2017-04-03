@@ -6,6 +6,12 @@ Gerard Rey González 1r ASIX
 package projecte;
 
 import java.util.Scanner;
+import java.io.File;
+import java.io.ObjectInputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class projecte1 {
 
@@ -35,6 +41,61 @@ public class projecte1 {
       array[q] = new Boss();
       array[q].setOmplit(false);
     }
+
+    File f = new File("projecte/boss.dat");
+
+    if(f.exists()) {
+
+      ObjectInputStream dades = null;
+
+      try {
+        dades = new ObjectInputStream(new FileInputStream(f));
+
+        int i=0;
+        while(true) {
+          Boss b = (Boss) dades.readObject();
+          array[i] = b;
+          System.out.println(b);
+          i++;
+        }
+
+      } catch (ClassNotFoundException | IOException ex) {
+
+        System.err.println("Error en obrir el fitxer" + ex);
+      } finally {
+        try {
+          dades.close();
+        } catch (IOException ex) {
+          System.out.println("Error en tancar el fitxer");
+        }
+      }
+    }
+  }
+
+  public static void sortirPrograma() {
+    File f = new File("projecte/boss.dat");
+
+    ObjectOutputStream dades = null;
+    try {
+      dades = new ObjectOutputStream(new FileOutputStream(f));
+
+      int i=0;
+      while (true) {
+        dades.writeObject(array[i]);
+        i++;
+      }
+
+    } catch (IOException ex) {
+      System.err.println("Error en obrir el fitxer");
+    } finally {
+      try {
+        dades.close();
+      } catch (IOException ex) {
+        System.err.println("Error en tractar el fitxer");
+      }
+    }
+
+    System.exit(0);
   }
 
   public static void printMenu() {
@@ -65,7 +126,7 @@ public class projecte1 {
   public static void triaOpcio() {
 
     switch (opcio) {
-      case 0: System.exit(0); break;
+      case 0: sortirPrograma(); break;
       case 1: newBoss(); break;
       case 2: esborrarBoss(); break;
       case 3: modificarBoss(); break;
@@ -136,24 +197,24 @@ public class projecte1 {
         System.out.println("\n###Afegir un Boss###");
 
         System.out.println("Introdueix el nom complet: ");
-        array[casella].setNom(entry.skip("[\r\n]*").nextLine());
+        array[casella].setNom();
 
         System.out.println("Joc de la primera aparició (valor numèric): ");
         array[casella].setAparicio();
 
         System.out.println("Zona on es troba: ");
-        array[casella].setZona(entry.skip("[\r\n]*").nextLine());
+        array[casella].setZona();
 
         tipusAtacs();
 
         System.out.println("Tamany (en metres): ");
-        array[casella].setTamany(entry.skip("[\r\n]*").nextInt());
+        array[casella].setTamany();
 
         System.out.println("Animes: ");
-        array[casella].setAnimes(entry.skip("[\r\n]*").nextInt());
+        array[casella].setAnimes();
 
         System.out.println("Descripció: ");
-        array[casella].setDesc(entry.skip("[\r\n]*").nextLine());
+        array[casella].setDesc();
 
         array[casella].setOmplit(true);
     } else {
@@ -236,25 +297,25 @@ public class projecte1 {
                 System.out.println("Introdueix el nou valor: ");
                 switch(opcioInt){
                     case 1:
-                        array[casella].setNom(entry.skip("[\r\n]*").nextLine());
+                        array[casella].setNom();
                         break;
                     case 2:
-                        comprovaAparicio();
+                        array[casella].setAparicio();
                         break;
                     case 3:
-                        array[casella].setZona(entry.skip("[\r\n]*").nextLine());
+                        array[casella].setZona();
                         break;
                     case 4:
                         tipusAtacs();
                         break;
                     case 5:
-                        array[casella].setTamany(entry.skip("[\r\n]*").nextDouble());
+                        array[casella].setTamany();
                         break;
                     case 6:
-                        array[casella].setAnimes(entry.nextInt());
+                        array[casella].setAnimes();
                         break;
                     case 7:
-                        array[casella].setDesc(entry.skip("[\r\n]*").nextLine());
+                        array[casella].setDesc();
                         break;
                 }
                 System.out.println("Vols modificar un altre valor? (s/n)");

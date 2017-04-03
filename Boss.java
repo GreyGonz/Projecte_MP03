@@ -4,7 +4,8 @@ package projecte;
 
 import java.util.Scanner;
 
-public class Boss {
+public class Boss implements java.io.Serializable {
+  private static final long serialVersionUID = 42L;
   private String nom=null;
   private String zona=null;
   private String desc=null;
@@ -13,7 +14,13 @@ public class Boss {
   private double tamany=0;
   private char atac=' ';
   private boolean omplit=false;
+
+  private String valorStr;
+  private int valorInt;
+  private double valorDbl;
   private Scanner e = new Scanner(System.in);
+
+
 
   public Boss() {
 
@@ -31,6 +38,24 @@ public class Boss {
               "\nDescripció: " + desc + "\n";
   }
 
+
+  public void comprovaValor(int prova) {
+    do {
+      try {
+        switch(prova) {
+          case 1: this.valorStr = e.skip("[\r\n]*").nextLine(); break;
+          case 2: this.valorInt = e.skip("[\r\n]*").nextInt(); break;
+          case 3: this.valorDbl = e.skip("[\r\n]*").nextDouble(); break;
+        }
+        break;
+      } catch (java.util.InputMismatchException x) {
+        System.err.println("VALOR INVÀLID\nTorna a introduïr el valor: ");
+        e.next();
+      }
+    } while (true);
+
+  }
+
   public boolean isOmplit() {
     return omplit;
   }
@@ -43,45 +68,41 @@ public class Boss {
     return nom;
   }
 
-  public void setNom(String nom) {
-    this.nom = nom;
+  public void setNom() {
+    comprovaValor(1);
+    this.nom = valorStr;
+
   }
 
   public String getZona() {
     return zona;
   }
 
-  public void setZona(String zona) {
-    this.zona = zona;
+  public void setZona() {
+    comprovaValor(1);
+    this.zona = valorStr;
   }
 
   public String getDesc() {
     return desc;
   }
 
-  public void setDesc(String desc) {
-    this.desc = desc;
+  public void setDesc() {
+    comprovaValor(1);
+    this.desc = valorStr;
   }
 
   public int getAparicio() {
     return aparicio;
   }
 
-  // public void setAparicio(int aparicio) {
-  //   this.aparicio = aparicio;
-  // }
-
   public void setAparicio() {
     do {
-
-      try {
-        this.aparicio = e.skip("[\r\n]*").nextInt();
-        break;
-      } catch (java.util.InputMismatchException x) {
-        System.err.println("VALOR INVÀLID");
-        e.next();
-      }
-    } while(true && (aparicio < 1 || aparicio > 3));
+      comprovaValor(2);
+      this.aparicio = valorInt;
+      if (aparicio >= 1 && aparicio <= 3) break;
+      else System.err.println("VALOR INVÀLID\nNomés s'accepten valors dins el rang 1-3: ");
+    } while(true);
 
   }
 
@@ -89,16 +110,18 @@ public class Boss {
     return animes;
   }
 
-  public void setAnimes(int animes) {
-    this.animes = animes;
+  public void setAnimes() {
+    comprovaValor(2);
+    this.animes = valorInt;
   }
 
   public double getTamany() {
     return tamany;
   }
 
-  public void setTamany(double tamany) {
-    this.tamany = tamany;
+  public void setTamany() {
+    comprovaValor(3);
+    this.tamany = valorDbl;
   }
 
   public char getAtac() {
